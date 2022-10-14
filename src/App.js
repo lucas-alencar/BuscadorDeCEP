@@ -6,7 +6,8 @@ import './styles.css';
 
 function App() {
 
-  const [input, setInput] = useState('')
+  const [input, setInput] = useState('');
+  const [cep, setCep] = useState({});
 
 // api: 59124120/json
 
@@ -14,7 +15,8 @@ function App() {
     if(input !== ''){
       try{
         const response = await api.get(`${input}/json`);
-        console.log(response);
+        setCep(response.data);
+        setInput("");
       }catch{
 
       }
@@ -36,12 +38,14 @@ function App() {
             <FiSearch size={25} color="#fff" />
           </button>
       </div>
-
-      <main className='main'>
-        <h2>CEP: 40028922</h2>
-        <span>Rua do Yudi Tamashiro</span>
-        <span>Complemento: Vila Cesamo</span>
-      </main>
+      {Object.keys(cep).length > 0 && (
+        <main className='main'>
+          <h2>CEP: {cep.cep}</h2>
+          <span>{cep.logradouro}</span>
+          <span>Complemento:{cep.complemento}</span>
+          <span>{cep.localidade} - {cep.uf}</span>
+        </main>
+      )}
 
     </div>
   );
